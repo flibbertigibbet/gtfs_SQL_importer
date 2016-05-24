@@ -35,6 +35,8 @@ select s.*, r.routes
 into stop_info
 from gtfs_stops s inner join routes_served_geom r on (s.stop_id=r.stop_id);
 
+alter table stop_info rename the_geom to geom;
+
 -- description of all route types in use in this database
 select distinct r.route_type, t.description
 into route_types_used
@@ -53,7 +55,7 @@ alter table route_types_used add constraint route_types_used_pk primary key (rou
 
 create index route_info_gix on route_info using gist (geom);
 
-create index stop_info_gix on route_info using gist (geom);
+create index stop_info_gix on stop_info using gist (geom);
 
 -- analyze for indexing
 vacuum;
